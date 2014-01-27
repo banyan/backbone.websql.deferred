@@ -8,6 +8,10 @@ backbone.websql.deferred is different in a way,
 1. can be worked each specific model.
 1. does not pollute global namespace.
 
+## STATUS
+
+WIP.
+
 ## TODO
 
 * Add tests.
