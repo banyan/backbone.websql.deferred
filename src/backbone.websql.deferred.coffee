@@ -32,7 +32,8 @@
     object:   "TEXT"
 
   createColDefn = (col) ->
-    throw new Error("Unsupported type: #{col.type}") if col.type? not of typeMap
+    if col.type and (col.type not of typeMap)
+      throw new Error("Unsupported type: #{col.type}")
     defn = "`#{col.name}`"
     if col.type
       if col.scale
