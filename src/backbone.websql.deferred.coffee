@@ -95,7 +95,7 @@
       @_executeSql sql, params, doneCallback, failCallback, options
 
     update: (model, doneCallback, failCallback, options) ->
-      return @create(model, success, error) if WebSQLStore.insertOrReplace
+      return @create(model, doneCallback, failCallback) if Backbone.WebSQL.insertOrReplace
       stmts = ["`value` = ?"]
       params = [JSON.stringify(model.toJSON())]
       @columns.forEach (col) ->
