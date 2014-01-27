@@ -1,0 +1,17 @@
+{
+  "name": "backbone.websql.deferred",
+  "version": "0.0.3",
+  "homepage": "https://github.com/banyan/backbone.websql.deferred",
+  "authors": [
+    "Kohei Hasegawa <ameutau@gmail.com>"
+  ],
+  "main": "lib/backbone.websql.deferred.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
