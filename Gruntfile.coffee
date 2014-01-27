@@ -3,14 +3,9 @@ module.exports = (grunt) ->
 
   grunt.initConfig
     coffee:
-      lib:
-        options:
-          bare: true
-        expand: true
-        cwd: 'src',
-        src: ["*.coffee"]
-        dest: "lib"
-        ext: ".js"
+      compile:
+        files:
+          'lib/backbone.websql.deferred.js': 'src/backbone.websql.deferred.coffee'
 
     watch:
       src:

@@ -1,8 +1,8 @@
 {
-  "name": "backbone-websql-deferred",
-  "version": "0.0.2",
+  "name": "backbone.websql.deferred",
+  "version": "0.0.3",
   "description": "",
-  "main": "lib/backbone-websql-deferred.js",
+  "main": "lib/backbone.websql.deferred.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
