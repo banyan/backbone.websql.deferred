@@ -6,10 +6,35 @@ module.exports = (grunt) ->
       compile:
         files:
           'lib/backbone.websql.deferred.js': 'src/backbone.websql.deferred.coffee'
+          'test/lib/backbone.websql.deferred-test.js': 'test/src/backbone.websql.deferred-test.coffee'
+
+    concat:
+      options:
+        separator: ';'
+      deps:
+        src: [
+          'node_modules/jquery/dist/jquery.js'
+          'node_modules/underscore/underscore.js'
+          'node_modules/backbone/backbone.js'
+        ]
+        dest: 'vendor/vendor.js'
+      depsForTest:
+        src: [
+          'node_modules/mocha/mocha.js'
+          'node_modules/sinon/lib/sinon.js'
+          'node_modules/chai/chai.js'
+          'node_modules/sinon-chai/lib/sinon-chai.js'
+        ]
+        dest: 'vendor/test-vendor.js'
+      depsForCSS:
+        src: [
+          'node_modules/mocha/mocha.css'
+        ]
+        dest: 'vendor/test.css'
 
     watch:
       src:
-        files: "src/*.coffee"
+        files: ["src/*.coffee", "test/src/*.coffee"]
         tasks: ["build"]
 
     simplemocha:
@@ -26,6 +51,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-contrib-coffee"
   grunt.loadNpmTasks "grunt-contrib-watch"
   grunt.loadNpmTasks "grunt-simple-mocha"
+  grunt.loadNpmTasks 'grunt-contrib-concat'
 
   grunt.registerTask "default", ["watch"]
   grunt.registerTask "build",   ["coffee"]
