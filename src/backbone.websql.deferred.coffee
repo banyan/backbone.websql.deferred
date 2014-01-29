@@ -126,10 +126,6 @@
       @db.transaction (tx) ->
         tx.executeSql sql, params, doneCallback, failCallback
 
-    _getValueFromHash: (hash) ->
-      key = _.first _.keys hash
-      hash[key]
-
   Backbone.WebSQL.sync = (method, model, options) ->
     store = model.store or model.collection.store
     isSingleResult = false
