@@ -42,6 +42,7 @@
         defn += " #{typeMap[col.type]}"
     defn
 
+
   Backbone.WebSQL = (@db, @tableName, @columns = []) ->
     throw "Backbone.websql.deferred: Environment does not support WebSQL." unless @_isWebSQLSupported()
     colDefns = [
@@ -87,8 +88,14 @@
           sql += " WHERE " + options.filters
         else if typeof options.filters is "object"
           sql += " WHERE " + Object.keys(options.filters).map((col) ->
-            params.push options.filters[col]
-            "`#{col}` = ?"
+            if _.isArray options.filters[col]
+              params.push options.filters[col]...
+              placeholders = []
+              _(options.filters[col].length).times -> placeholders.push '?'
+              "`#{col}` IN (#{placeholders.join()})"
+            else
+              params.push options.filters[col]
+              "`#{col}` = ?"
           ).join(" AND ")
         else
           throw new Error "Unsupported filters type: #{typeof options.filters}"
@@ -118,6 +125,10 @@
     _executeSql: (sql, params = [], doneCallback, failCallback, options) ->
       @db.transaction (tx) ->
         tx.executeSql sql, params, doneCallback, failCallback
+
+    _getValueFromHash: (hash) ->
+      key = _.first _.keys hash
+      hash[key]
 
   Backbone.WebSQL.sync = (method, model, options) ->
     store = model.store or model.collection.store
