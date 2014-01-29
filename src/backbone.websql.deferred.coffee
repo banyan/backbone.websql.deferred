@@ -83,22 +83,22 @@
     findAll: (model, doneCallback, failCallback, options) ->
       params = []
       sql = "SELECT `id`, `value` FROM `#{@tableName}`"
-      if options.filters
-        if typeof options.filters is "string"
-          sql += " WHERE " + options.filters
-        else if typeof options.filters is "object"
-          sql += " WHERE " + Object.keys(options.filters).map((col) ->
-            if _.isArray options.filters[col]
-              params.push options.filters[col]...
+      if options.where
+        if typeof options.where is "string"
+          sql += " WHERE " + options.where
+        else if typeof options.where is "object"
+          sql += " WHERE " + Object.keys(options.where).map((col) ->
+            if _.isArray options.where[col]
+              params.push options.where[col]...
               placeholders = []
-              _(options.filters[col].length).times -> placeholders.push '?'
+              _(options.where[col].length).times -> placeholders.push '?'
               "`#{col}` IN (#{placeholders.join()})"
             else
-              params.push options.filters[col]
+              params.push options.where[col]
               "`#{col}` = ?"
           ).join(" AND ")
         else
-          throw new Error "Unsupported filters type: #{typeof options.filters}"
+          throw new Error "Unsupported where type: #{typeof options.where}"
       @_executeSql sql, params, doneCallback, failCallback, options
 
     update: (model, doneCallback, failCallback, options) ->
