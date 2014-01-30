@@ -15,8 +15,6 @@ WIP.
 ## TODO
 
 * Add tests
-* Support read transaction
-* Support index
 
 ## Web SQL Database
 
