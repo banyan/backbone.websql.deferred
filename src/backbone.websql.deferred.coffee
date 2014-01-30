@@ -77,7 +77,7 @@
       @_executeSql "INSERT #{orReplace} INTO `#{@tableName}`(#{colNames.join(",")}) VALUES (#{placeholders.join(",")});", params
 
     find: (model, doneCallback, failCallback, options) ->
-      @_executeSql "SELECT `id`, `value` FROM `" + @tableName + "` WHERE (`id` = ?);",
+      @_executeSql "SELECT `id`, `value` FROM `#{@tableName}` WHERE (`id` = ?);",
         [model.id.toString()], doneCallback, failCallback, options
 
     findAll: (model, doneCallback, failCallback, options) ->
