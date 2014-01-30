@@ -37,22 +37,20 @@ module.exports = (grunt) ->
         files: ["src/*.coffee", "test/src/*.coffee"]
         tasks: ["build"]
 
-    simplemocha:
-      all:
-        src: ['test/**/*.coffee']
+    shell:
+      'mocha-phantomjs':
+        command: 'mocha-phantomjs test/index.html'
         options:
-          require: 'test/test-helper'
-          timeout: 3000
-          ignoreLeaks: false
-          ui: 'bdd'
-          compilers: 'coffee:coffee-script'
+          stdout: true
+          stderr: true
 
-  # These plugins provide necessary tasks.
   grunt.loadNpmTasks "grunt-contrib-coffee"
   grunt.loadNpmTasks "grunt-contrib-watch"
   grunt.loadNpmTasks "grunt-simple-mocha"
   grunt.loadNpmTasks 'grunt-contrib-concat'
+  grunt.loadNpmTasks 'grunt-shell'
 
   grunt.registerTask "default", ["watch"]
   grunt.registerTask "build",   ["coffee"]
-  grunt.registerTask "test",    ["simplemocha"]
+  grunt.registerTask "test",    ["build", "concat"]
+  grunt.registerTask "test",    ["build", "concat", "shell:mocha-phantomjs"]
