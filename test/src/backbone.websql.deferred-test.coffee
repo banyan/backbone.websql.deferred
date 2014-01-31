@@ -16,9 +16,8 @@ describe 'Backbone.WebSQL', ->
     it 'should create a user and can fetch', (done) ->
       @user.save().done (=>
         fetchedUser = new User id: @user.id
-        fetchedUser.fetch().done (=>
+        fetchedUser.fetch().done =>
           expect(fetchedUser.id).to.eq @user.id
           expect(fetchedUser.name).to.eq @user.name
-        )
         done()
       )(done)
