@@ -1,20 +1,28 @@
 db = openDatabase 'bb-websql-tests', '', 'Backbone Websql Tests', 1024 * 1024
 
 User = Backbone.Model.extend
-  store: new Backbone.WebSQL db, 'users'
+  store: new Backbone.WebSQL(db, 'users')
 
 Users = Backbone.Collection.extend
   model: User
   store: User::store
 
 Post = Backbone.Model.extend
-  store: new Backbone.WebSQL db, 'posts', ['user_id']
+  store: new Backbone.WebSQL(db, 'posts', [{name: 'user_id'}])
 
 Posts = Backbone.Collection.extend
   model: Post
   store: Post::store
 
 describe 'Backbone.WebSQL', ->
+  after (done) ->
+    # TODO Create drop table API?
+    db.transaction (tx) =>
+      for table in ['users', 'posts']
+        tx.executeSql "DROP TABLE IF EXISTS #{table}"
+    , (err)  -> console.error "FAIL: drop tables"
+    , (resp) -> console.info  "SUCESS: drop tables"
+    done()
 
   describe '.create', ->
     context 'when optional column doesnt exist', ->
@@ -47,10 +55,51 @@ describe 'Backbone.WebSQL', ->
       afterEach ->
         @post.destroy()
 
-      it 'should create a post and can fetch', (done) ->
-        fetchedPost = new Post id: @post.id
-        fetchedPost.fetch().done =>
-          expect(fetchedPost.get 'id').to.eq @post.get 'id'
-          expect(fetchedPost.get 'title').to.eq @post.get 'title'
-          expect(fetchedPost.get 'user_id').to.eq @post.get 'user_id'
+      it 'should create a post and can fetch by user_id (not default key)', (done) ->
+        posts = new Posts
+        posts.fetch(where: { user_id: @post.get('user_id') }).done (rows) =>
+          expect(rows[0]['id']).to.eq @post.get 'id'
+          expect(rows[0]['title']).to.eq @post.get 'title'
+          expect(rows[0]['user_id']).to.eq @post.get 'user_id'
           done()
+
+  describe '.findAll', ->
+    beforeEach (done) =>
+      @user1 = new User name: 'user1'
+      @user2 = new User name: 'user2'
+      @user3 = new User name: 'user3'
+
+      $.when(
+        _.invoke [@user1, @user2, @user3], 'save'
+      ).done do (done) => done()
+
+    afterEach (done) =>
+      $.when(
+        _.invoke [@user1, @user2, @user3], 'destroy'
+      ).done do (done) => done()
+
+    it 'should fetch all records', (done) =>
+      users = new Users
+      users.fetch().done (rows) =>
+        expect(rows.length).to.eq 3
+        done()
+
+    it 'should fetch with where clawse of string', (done) =>
+      users = new Users
+      users.fetch(where: "id = \"#{@user1.get 'id'}\"").done (rows) =>
+        expect(rows.length).to.eq 1
+        expect(rows[0]['name']).to.eq 'user1'
+        done()
+
+    it 'should fetch with where in clawse by array', (done) =>
+      users = new Users
+      users.fetch(where: { id: [@user2.get('id'), @user3.get('id')] }).done (rows) =>
+        expect(rows.length).to.eq 2
+        done()
+
+    it 'should fetch with where clawse by hash', (done) =>
+      users = new Users
+      users.fetch(where: { id: @user2.get('id') }).done (rows) =>
+        expect(rows.length).to.eq 1
+        expect(rows[0]['name']).to.eq 'user2'
+        done()

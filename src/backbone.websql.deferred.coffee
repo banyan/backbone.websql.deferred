@@ -42,7 +42,6 @@
         defn += " #{typeMap[col.type]}"
     defn
 
-
   Backbone.WebSQL = (@db, @tableName, @columns = []) ->
     throw "Backbone.websql.deferred: Environment does not support WebSQL." unless @_isWebSQLSupported()
     colDefns = [
@@ -69,7 +68,7 @@
       ]
 
       for col in @columns
-        colNames.push "`" + col.name + "`"
+        colNames.push "`#{col.name}`"
         placeholders.push ["?"]
         params.push model.attributes[col.name]
 
