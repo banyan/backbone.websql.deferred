@@ -3,3 +3,4 @@ example/
 npm-debug.log
 vendor/
 test/lib/
+tmp/
