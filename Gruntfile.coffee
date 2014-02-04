@@ -7,6 +7,7 @@ module.exports = (grunt) ->
         src: [
           'src/utils.coffee'
           'src/main.coffee'
+          'src/sync.coffee'
         ]
         dest: 'tmp/'
         options:
@@ -24,6 +25,7 @@ module.exports = (grunt) ->
           'src/entry.coffee'
           'tmp/utils.coffee'
           'tmp/main.coffee'
+          'tmp/sync.coffee'
         ]
         dest: 'tmp/backbone.websql.deferred.coffee'
 
