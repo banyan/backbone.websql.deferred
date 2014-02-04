@@ -2,15 +2,27 @@
 module.exports = (grunt) ->
 
   grunt.initConfig
-    coffee:
-      compile:
-        files:
-          'lib/backbone.websql.deferred.js': 'src/backbone.websql.deferred.coffee'
-          'test/lib/backbone.websql.deferred-test.js': 'test/src/backbone.websql.deferred-test.coffee'
+    indent:
+      scripts:
+        src: ['src/main.coffee']
+        dest: 'tmp/'
+        options:
+          style: 'space'
+          size: 2
+          change: 1
 
     concat:
       options:
         separator: ';'
+      sources:
+        options:
+          separator: '' # override
+        src: [
+          'src/entry.coffee'
+          'tmp/main.coffee'
+        ]
+        dest: 'tmp/backbone.websql.deferred.coffee'
+
       deps:
         src: [
           'node_modules/jquery/dist/jquery.js'
@@ -32,6 +44,12 @@ module.exports = (grunt) ->
         ]
         dest: 'vendor/test.css'
 
+    coffee:
+      compile:
+        files:
+          'lib/backbone.websql.deferred.js': 'tmp/backbone.websql.deferred.coffee'
+          'test/lib/backbone.websql.deferred-test.js': 'test/src/backbone.websql.deferred-test.coffee'
+
     watch:
       src:
         files: ["src/*.coffee", "test/src/*.coffee"]
@@ -49,8 +67,8 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-simple-mocha"
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-shell'
+  grunt.loadNpmTasks 'grunt-indent'
 
   grunt.registerTask "default", ["watch"]
-  grunt.registerTask "build",   ["coffee"]
-  grunt.registerTask "test",    ["build", "concat"]
-  grunt.registerTask "test",    ["build", "concat", "shell:mocha-phantomjs"]
+  grunt.registerTask "build",   ["indent", "concat", "coffee"]
+  grunt.registerTask "test",    ["build", "shell:mocha-phantomjs"]
