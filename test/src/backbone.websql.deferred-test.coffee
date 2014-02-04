@@ -116,3 +116,7 @@ describe 'Backbone.WebSQL', ->
         users.fetch().done (rows) =>
           expect(rows.length).to.eq 0
           done()
+
+  describe '.update', ->
+  describe 'Backbone.WebSQL.sync', ->
+  describe 'Backbone.sync', ->
