@@ -1,7 +1,8 @@
 # Backbone.WebSQL.Deferred
 [![Build Status](https://secure.travis-ci.org/banyan/backbone.websql.deferred.png?branch=master)](http://travis-ci.org/banyan/backbone.websql.deferred)
 
-This project began as a fork of [MarrLiss/backbone-websql](https://github.com/MarrLiss/backbone-websql).
+Store data to [WebSQL](http://www.w3.org/TR/webdatabase/) via Backbone API.<br />
+This is a rewrite and extension of the awesome [MarrLiss/backbone-websql](https://github.com/MarrLiss/backbone-websql) plugin by @MarrLiss.
 
 backbone.websql.deferred is different in a way,
 
@@ -9,14 +10,11 @@ backbone.websql.deferred is different in a way,
 1. can be worked each specific model.
 1. does not pollute global namespace.
 
-## STATUS
+## Install
 
-WIP.
+via Bower.
+
 
 ## TODO
 
 * Add tests
-
-## Web SQL Database
-
-http://www.w3.org/TR/webdatabase/
