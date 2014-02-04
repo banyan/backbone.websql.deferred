@@ -4,7 +4,10 @@ module.exports = (grunt) ->
   grunt.initConfig
     indent:
       scripts:
-        src: ['src/main.coffee']
+        src: [
+          'src/utils.coffee'
+          'src/main.coffee'
+        ]
         dest: 'tmp/'
         options:
           style: 'space'
@@ -19,6 +22,7 @@ module.exports = (grunt) ->
           separator: '' # override
         src: [
           'src/entry.coffee'
+          'tmp/utils.coffee'
           'tmp/main.coffee'
         ]
         dest: 'tmp/backbone.websql.deferred.coffee'
