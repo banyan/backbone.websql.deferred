@@ -1,4 +1,5 @@
-# Backbone.WebSQL.Deferred [![Build Status](https://secure.travis-ci.org/banyan/backbone.websql.deferred.png?branch=master)](http://travis-ci.org/banyan/backbone.websql.deferred)
+# Backbone.WebSQL.Deferred
+[![Build Status](https://secure.travis-ci.org/banyan/backbone.websql.deferred.png?branch=master)](http://travis-ci.org/banyan/backbone.websql.deferred)
 
 This project began as a fork of [MarrLiss/backbone-websql](https://github.com/MarrLiss/backbone-websql).
 
