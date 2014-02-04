@@ -103,3 +103,16 @@ describe 'Backbone.WebSQL', ->
         expect(rows.length).to.eq 1
         expect(rows[0]['name']).to.eq 'user2'
         done()
+
+  describe '.destroy', ->
+    beforeEach (done) =>
+      @user = new User name: 'bob'
+      @user.save().done do (done) =>
+        done()
+
+    it 'should be destroyed', (done) =>
+      @user.destroy().done do (done) =>
+        users = new Users id: @user.get 'id'
+        users.fetch().done (rows) =>
+          expect(rows.length).to.eq 0
+          done()
