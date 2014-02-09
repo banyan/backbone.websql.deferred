@@ -45,7 +45,7 @@
       defn += " #{typeMap[col.type]}" if col.type
     defn
 
-  Backbone.WebSQL = (@db, @tableName, @columns = []) ->
+  Backbone.WebSQL = (@db, @tableName, @columns = [], @indices = []) ->
     throw "Backbone.websql.deferred: Environment does not support WebSQL." unless @_isWebSQLSupported()
     defaultColumns = [
       "`id` unique"
@@ -53,7 +53,8 @@
     ]
 
     columns = defaultColumns.concat @columns.map(lookupType)
-    @_executeSql "CREATE TABLE IF NOT EXISTS `#{tableName}` (#{columns.join(", ")});"
+    @_executeSql "CREATE TABLE IF NOT EXISTS `#{@tableName}` (#{columns.join(", ")});"
+    @_createIndex() if @indices.length isnt 0
 
   Backbone.WebSQL.insertOrReplace = false
 
@@ -128,6 +129,13 @@
     _executeSql: (sql, params = [], doneCallback, failCallback, options) ->
       @db.transaction (tx) ->
         tx.executeSql sql, params, doneCallback, failCallback
+
+    _createIndex: ->
+      if @indices[0]? and _.isArray @indices[0]
+        for index in @indices
+          @_executeSql "CREATE INDEX IF NOT EXISTS `#{@tableName}_#{index.join("_")}` ON `#{@tableName}` (#{index.join(", ")});"
+      else
+        @_executeSql "CREATE INDEX IF NOT EXISTS `#{@tableName}_#{@indices.join("_")}` ON `#{@tableName}` (#{@indices.join(", ")});"
 
   Backbone.WebSQL.sync = (method, model, options) ->
     store = model.store or model.collection.store

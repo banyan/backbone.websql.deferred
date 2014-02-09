@@ -94,6 +94,53 @@ describe 'Backbone.WebSQL', ->
 
       expect(fn).to.throw('Unsupported type: foo')
 
+  describe 'index', ->
+    beforeEach ->
+      sinon.spy(Backbone.WebSQL.prototype, "_executeSql")
+
+    afterEach ->
+      Backbone.WebSQL.prototype._executeSql.restore()
+
+    context 'when index is one dimension array', ->
+      it 'should execute expected index query', ->
+        Klass = Backbone.Model.extend
+          store: new Backbone.WebSQL(db, 'klass', ['user_id'], ['user_id'])
+
+        expect(
+          Backbone.WebSQL.prototype._executeSql.secondCall.calledWith("CREATE INDEX IF NOT EXISTS `klass_user_id` ON `klass` (user_id);")
+        ).to.be.true
+
+    context 'when index is twe dimensions array', ->
+      it 'should execute expected index query', ->
+        Klass = Backbone.Model.extend
+          store: new Backbone.WebSQL(db, 'klass', ['user_id'], [['user_id']])
+
+        expect(
+          Backbone.WebSQL.prototype._executeSql.secondCall.calledWith("CREATE INDEX IF NOT EXISTS `klass_user_id` ON `klass` (user_id);")
+        ).to.be.true
+
+    context 'when index is one dimension array and elements are multiple', ->
+      it 'should execute expected index query', ->
+        Klass = Backbone.Model.extend
+          store: new Backbone.WebSQL(db, 'klass', ['user_id', 'parent_id'], ['user_id', 'parent_id'])
+
+        expect(
+          Backbone.WebSQL.prototype._executeSql.secondCall.calledWith("CREATE INDEX IF NOT EXISTS `klass_user_id_parent_id` ON `klass` (user_id, parent_id);")
+        ).to.be.true
+
+    context 'when index is two dimensions array and elements are multiple', ->
+      it 'should execute expected index query', ->
+        Klass = Backbone.Model.extend
+          store: new Backbone.WebSQL(db, 'klass', ['user_id', 'parent_id'], [['user_id', 'parent_id'], ['id', 'parent_id']])
+
+        expect(
+          Backbone.WebSQL.prototype._executeSql.secondCall.calledWith("CREATE INDEX IF NOT EXISTS `klass_user_id_parent_id` ON `klass` (user_id, parent_id);")
+        ).to.be.true
+
+        expect(
+          Backbone.WebSQL.prototype._executeSql.thirdCall.calledWith("CREATE INDEX IF NOT EXISTS `klass_id_parent_id` ON `klass` (id, parent_id);")
+        ).to.be.true
+
   describe '.create', ->
     context 'when optional column doesnt exist', ->
       beforeEach (done) ->
