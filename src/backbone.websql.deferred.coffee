@@ -171,12 +171,12 @@
 
     df?.promise()
 
-  Backbone.ajaxSync = Backbone.sync
-  Backbone.getSyncMethod = (model) ->
+  Backbone.WebSQL.ajaxSync = Backbone.sync
+  Backbone.WebSQL.getSyncMethod = (model) ->
     return Backbone.WebSQL.sync if model.store or (model.collection?.store)
-    Backbone.ajaxSync
+    Backbone.WebSQL.ajaxSync
 
   Backbone.sync = (method, model, options) ->
-    Backbone.getSyncMethod(model).apply @, [method, model, options]
+    Backbone.WebSQL.getSyncMethod(model).apply @, [method, model, options]
 
   Backbone.WebSQL
