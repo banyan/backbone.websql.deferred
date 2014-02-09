@@ -104,17 +104,17 @@
       return @create(model, doneCallback, failCallback) if Backbone.WebSQL.insertOrReplace
       stmts = ["`value` = ?"]
       params = [JSON.stringify model.toJSON()]
-      @columns.forEach (col) ->
+      for col in @columns
         stmts.push "`#{col.name}` = ?"
         params.push model.attributes[col.name]
       params.push model.id.toString()
 
-      @_executeSql "UPDATE `#{@tableName}` SET #{stmts.join(", ")} WHERE(`id` = ?);", params, ((tx, result) ->
+      @_executeSql "UPDATE `#{@tableName}` SET #{stmts.join(", ")} WHERE (`id` = ?);", params, ((tx, result) ->
         if result.rowsAffected is 1
           doneCallback tx, result
         else
           failCallback tx, new Error("UPDATE affected #{result.rowsAffected} rows")
-      ), error, options
+      ), failCallback, options
 
     destroy: (model, doneCallback, failCallback, options) ->
       @_executeSql "DELETE FROM `#{@tableName}` WHERE (`id` = ?);", [model.id.toString()], doneCallback, failCallback, options

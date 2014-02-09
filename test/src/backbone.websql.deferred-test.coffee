@@ -104,6 +104,48 @@ describe 'Backbone.WebSQL', ->
         expect(rows[0]['name']).to.eq 'user2'
         done()
 
+  describe '.update', ->
+    context 'when optional column doesnt exist', ->
+      beforeEach (done) ->
+        @user = new User
+          name: 'foo'
+
+        @user.save().done do (done) =>
+          done()
+
+      afterEach ->
+        @user.destroy()
+
+      it 'should update and can be fetched', (done) ->
+        @user.set 'name', 'bar'
+        @user.save().done =>
+          fetchedUser = new User id: @user.id
+          fetchedUser.fetch().done =>
+            expect(fetchedUser.get 'name').to.eq 'bar'
+            done()
+
+    context 'when optional column exists', ->
+      beforeEach (done) ->
+        @post = new Post
+          title: 'foo'
+          user_id: 'bar'
+
+        @post.save().done do (done) =>
+          done()
+
+      afterEach ->
+        @post.destroy()
+
+      it 'should update and can be fetched by optional key', (done) ->
+        @post.set 'title', 'baz'
+        @post.set 'user_id', 'qux'
+        @post.save().done =>
+          posts = new Posts
+          posts.fetch(where: { user_id: @post.get('user_id') }).done (rows) =>
+            expect(rows[0].title).to.eq 'baz'
+            expect(rows[0].user_id).to.eq 'qux'
+            done()
+
   describe '.destroy', ->
     beforeEach (done) =>
       @user = new User name: 'bob'
@@ -117,6 +159,5 @@ describe 'Backbone.WebSQL', ->
           expect(rows.length).to.eq 0
           done()
 
-  describe '.update', ->
   describe 'Backbone.WebSQL.sync', ->
   describe 'Backbone.sync', ->
