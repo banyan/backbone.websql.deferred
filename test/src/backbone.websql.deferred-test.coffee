@@ -88,6 +88,12 @@ describe 'Backbone.WebSQL', ->
         Backbone.WebSQL.prototype._executeSql.calledWith("CREATE TABLE IF NOT EXISTS `klass` (`id` unique, `value`, `user_id`, `parent_id`);")
       ).to.be.true
 
+    it 'should throw an error if unknown type is passed', ->
+      fn = -> Klass = Backbone.Model.extend
+        store: new Backbone.WebSQL(db, 'klass', [{name: 'user_id'}, {name: 'parent_id', type: 'foo'}])
+
+      expect(fn).to.throw('Unsupported type: foo')
+
   describe '.create', ->
     context 'when optional column doesnt exist', ->
       beforeEach (done) ->
