@@ -73,7 +73,7 @@
       ]
 
       for col in @columns
-        colNames.push if _.isString col then "`#{col}`" else "`#{col.name}`"
+        colNames.push "`#{if _.isString col then col else col.name}`"
         placeholders.push ["?"]
         params.push model.attributes[if _.isString col then col else col.name]
 
