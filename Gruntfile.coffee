@@ -20,6 +20,7 @@ module.exports = (grunt) ->
           'node_modules/sinon/lib/sinon/spy.js'
           'node_modules/sinon/lib/sinon/behavior.js'
           'node_modules/sinon/lib/sinon/stub.js'
+          'node_modules/sinon/lib/sinon/mock.js'
           'node_modules/chai/chai.js'
         ]
         dest: 'vendor/test-vendor.js'

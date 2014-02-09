@@ -14,6 +14,9 @@ Posts = Backbone.Collection.extend
   model: Post
   store: Post::store
 
+KlassNoWebSQL = Backbone.Model.extend
+  url: 'foo'
+
 describe 'Backbone.WebSQL', ->
   after (done) ->
     # TODO Create drop table API?
@@ -173,5 +176,31 @@ describe 'Backbone.WebSQL', ->
           expect(rows.length).to.eq 0
           done()
 
-  describe 'Backbone.WebSQL.sync', ->
   describe 'Backbone.sync', ->
+    beforeEach =>
+      sinon.spy(Backbone.WebSQL, "sync")
+      sinon.spy(Backbone.WebSQL, "ajaxSync")
+
+    afterEach ->
+      Backbone.WebSQL.sync.restore()
+      Backbone.WebSQL.ajaxSync.restore()
+
+    context 'when store is defined in model', ->
+      it 'should Backbone.WebSQL.sync is called', (done) ->
+        @user = new User
+          name: 'foo'
+
+        @user.save().done do (done) =>
+          expect(Backbone.WebSQL.sync.calledOnce).to.be.true
+          expect(Backbone.WebSQL.ajaxSync.called).to.be.false
+          done()
+
+    context 'when store isnt defined in model', ->
+      it 'should Backbone.WebSQL.ajaxSync is called', (done) ->
+        foo = new KlassNoWebSQL
+          name: 'foo'
+
+        foo.save()
+        expect(Backbone.WebSQL.sync.called).to.be.false
+        expect(Backbone.WebSQL.ajaxSync.calledOnce).to.be.true
+        done()

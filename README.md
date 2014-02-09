@@ -8,7 +8,7 @@ backbone.websql.deferred is different in a way,
 
 1. has deferred pattern support.
 1. can be worked each specific model.
-1. does not pollute global namespace.
+1. No global pollution
 
 ## Install
 
