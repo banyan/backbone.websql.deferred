@@ -18,7 +18,6 @@
   "devDependencies": {
     "mocha": "*",
     "sinon": "*",
-    "sinon-chai": "*",
     "chai": "*",
     "mocha-phantomjs": "*",
     "grunt": "~0.4.2",
