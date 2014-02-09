@@ -34,12 +34,16 @@
   createColDefn = (col) ->
     if col.type and (col.type not of typeMap)
       throw new Error("Unsupported type: #{col.type}")
-    defn = "`#{col.name}`"
-    if col.type
-      if col.scale
-        defn += " REAL"
-      else
-        defn += " #{typeMap[col.type]}"
+
+    if _.isString col
+      defn = "`#{col}`"
+    else
+      defn = "`#{col.name}`"
+      if col.type
+        if col.scale
+          defn += " REAL"
+        else
+          defn += " #{typeMap[col.type]}"
     defn
 
   Backbone.WebSQL = (@db, @tableName, @columns = []) ->
@@ -48,6 +52,7 @@
       "`id` unique"
       "`value`"
     ]
+
     colDefns = colDefns.concat @columns.map(createColDefn)
     @_executeSql "CREATE TABLE IF NOT EXISTS `#{tableName}` (#{colDefns.join(", ")});"
 
@@ -68,9 +73,9 @@
       ]
 
       for col in @columns
-        colNames.push "`#{col.name}`"
+        colNames.push if _.isString col then "`#{col}`" else "`#{col.name}`"
         placeholders.push ["?"]
-        params.push model.attributes[col.name]
+        params.push model.attributes[if _.isString col then col else col.name]
 
       orReplace = if Backbone.WebSQL.insertOrReplace then "OR REPLACE" else ""
       @_executeSql "INSERT #{orReplace} INTO `#{@tableName}`(#{colNames.join(",")}) VALUES (#{placeholders.join(",")});", params
@@ -105,8 +110,8 @@
       stmts = ["`value` = ?"]
       params = [JSON.stringify model.toJSON()]
       for col in @columns
-        stmts.push "`#{col.name}` = ?"
-        params.push model.attributes[col.name]
+        stmts.push "`#{if _.isString col then col else col.name}` = ?"
+        params.push model.attributes[if _.isString col then col else col.name]
       params.push model.id.toString()
 
       @_executeSql "UPDATE `#{@tableName}` SET #{stmts.join(", ")} WHERE (`id` = ?);", params, ((tx, result) ->
