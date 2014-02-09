@@ -34,7 +34,7 @@
     datetime: "NUMERIC"
     date:     "NUMERIC"
 
-  createColDefn = (col) ->
+  lookupType = (col) ->
     if col.type and (col.type not of typeMap)
       throw new Error("Unsupported type: #{col.type}")
 
@@ -47,13 +47,13 @@
 
   Backbone.WebSQL = (@db, @tableName, @columns = []) ->
     throw "Backbone.websql.deferred: Environment does not support WebSQL." unless @_isWebSQLSupported()
-    colDefns = [
+    defaultColumns = [
       "`id` unique"
       "`value`"
     ]
 
-    colDefns = colDefns.concat @columns.map(createColDefn)
-    @_executeSql "CREATE TABLE IF NOT EXISTS `#{tableName}` (#{colDefns.join(", ")});"
+    columns = defaultColumns.concat @columns.map(lookupType)
+    @_executeSql "CREATE TABLE IF NOT EXISTS `#{tableName}` (#{columns.join(", ")});"
 
   Backbone.WebSQL.insertOrReplace = false
 
