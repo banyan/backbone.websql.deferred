@@ -16,8 +16,11 @@ module.exports = (grunt) ->
         src: [
           'node_modules/mocha/mocha.js'
           'node_modules/sinon/lib/sinon.js'
+          'node_modules/sinon/lib/sinon/call.js'
+          'node_modules/sinon/lib/sinon/spy.js'
+          'node_modules/sinon/lib/sinon/behavior.js'
+          'node_modules/sinon/lib/sinon/stub.js'
           'node_modules/chai/chai.js'
-          'node_modules/sinon-chai/lib/sinon-chai.js'
         ]
         dest: 'vendor/test-vendor.js'
       depsForCSS:

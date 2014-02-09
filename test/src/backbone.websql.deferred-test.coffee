@@ -24,6 +24,20 @@ describe 'Backbone.WebSQL', ->
     , (resp) -> console.info  "SUCESS: drop tables"
     done()
 
+  context 'when window.openDatabase doesnt exist', ->
+    beforeEach ->
+      @stub = sinon.stub(Backbone.WebSQL.prototype, '_isWebSQLSupported').returns false
+
+    afterEach ->
+      @stub.restore()
+
+    it 'should throw an error', ->
+      fn = ->
+        User = Backbone.Model.extend
+          store: new Backbone.WebSQL(db, 'users')
+
+      expect(fn).to.throw('Backbone.websql.deferred: Environment does not support WebSQL.')
+
   describe '.create', ->
     context 'when optional column doesnt exist', ->
       beforeEach (done) ->
