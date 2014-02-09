@@ -23,8 +23,8 @@ describe 'Backbone.WebSQL', ->
     db.transaction (tx) =>
       for table in ['users', 'posts']
         tx.executeSql "DROP TABLE IF EXISTS #{table}"
-    , (err)  -> console.error "FAIL: drop tables"
-    , (resp) -> console.info  "SUCESS: drop tables"
+    , (err)  -> console.error "ERROR: drop tables"
+    , (resp) -> console.info  "SUCCESS: drop tables"
     done()
 
   context 'when window.openDatabase doesnt exist', ->
