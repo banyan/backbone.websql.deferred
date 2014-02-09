@@ -26,7 +26,6 @@
     "grunt-contrib-coffee": "~0.8.2",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-simple-mocha": "~0.4.0",
-    "grunt-shell": "~0.6.4",
-    "grunt-indent": "~0.1.4"
+    "grunt-shell": "~0.6.4"
   }
 }
