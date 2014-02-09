@@ -22,14 +22,17 @@
   guid = ->
     "#{S4()}#{S4()}-#{S4()}-#{S4()}-#{S4()}-#{S4()}#{S4()}#{S4()}"
 
+  # http://www.sqlite.org/datatype3.html
   typeMap =
     number:   "INTEGER"
     string:   "TEXT"
-    boolean:  "BOOLEAN"
-    array:    "LIST"
-    datetime: "TEXT"
-    date:     "TEXT"
-    object:   "TEXT"
+    text:     "TEXT"
+    blob:     ""
+    float:    "REAL"
+    double:   "REAL"
+    boolean:  "NUMERIC"
+    datetime: "NUMERIC"
+    date:     "NUMERIC"
 
   createColDefn = (col) ->
     if col.type and (col.type not of typeMap)
@@ -39,11 +42,7 @@
       defn = "`#{col}`"
     else
       defn = "`#{col.name}`"
-      if col.type
-        if col.scale
-          defn += " REAL"
-        else
-          defn += " #{typeMap[col.type]}"
+      defn += " #{typeMap[col.type]}" if col.type
     defn
 
   Backbone.WebSQL = (@db, @tableName, @columns = []) ->
