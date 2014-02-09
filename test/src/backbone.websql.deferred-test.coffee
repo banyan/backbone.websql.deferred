@@ -56,6 +56,8 @@ describe 'Backbone.WebSQL', ->
         Backbone.WebSQL.prototype._executeSql.calledWith("CREATE TABLE IF NOT EXISTS `klass` (`id` unique, `value`, `user_id`);")
       ).to.be.true
 
+      expect(Backbone.WebSQL.prototype._executeSql.calledOnce).to.be.true
+
     it 'can be defined by multiple array', ->
       Klass = Backbone.Model.extend
         store: new Backbone.WebSQL(db, 'klass', ['user_id', 'parent_id'])
@@ -63,6 +65,8 @@ describe 'Backbone.WebSQL', ->
       expect(
         Backbone.WebSQL.prototype._executeSql.calledWith("CREATE TABLE IF NOT EXISTS `klass` (`id` unique, `value`, `user_id`, `parent_id`);")
       ).to.be.true
+
+      expect(Backbone.WebSQL.prototype._executeSql.calledOnce).to.be.true
 
     it 'can be defined by objects in array', ->
       Klass = Backbone.Model.extend
@@ -72,6 +76,8 @@ describe 'Backbone.WebSQL', ->
         Backbone.WebSQL.prototype._executeSql.calledWith("CREATE TABLE IF NOT EXISTS `klass` (`id` unique, `value`, `user_id`);")
       ).to.be.true
 
+      expect(Backbone.WebSQL.prototype._executeSql.calledOnce).to.be.true
+
     it 'can be defined with type by objects in array', ->
       Klass = Backbone.Model.extend
         store: new Backbone.WebSQL(db, 'klass', [{name: 'user_id', type: 'number'}])
@@ -80,6 +86,8 @@ describe 'Backbone.WebSQL', ->
         Backbone.WebSQL.prototype._executeSql.calledWith("CREATE TABLE IF NOT EXISTS `klass` (`id` unique, `value`, `user_id` INTEGER);")
       ).to.be.true
 
+      expect(Backbone.WebSQL.prototype._executeSql.calledOnce).to.be.true
+
     it 'can be defined by multiple objects in array', ->
       Klass = Backbone.Model.extend
         store: new Backbone.WebSQL(db, 'klass', [{name: 'user_id'}, {name: 'parent_id'}])
@@ -87,6 +95,8 @@ describe 'Backbone.WebSQL', ->
       expect(
         Backbone.WebSQL.prototype._executeSql.calledWith("CREATE TABLE IF NOT EXISTS `klass` (`id` unique, `value`, `user_id`, `parent_id`);")
       ).to.be.true
+
+      expect(Backbone.WebSQL.prototype._executeSql.calledOnce).to.be.true
 
     it 'should throw an error if unknown type is passed', ->
       fn = -> Klass = Backbone.Model.extend
@@ -110,6 +120,8 @@ describe 'Backbone.WebSQL', ->
           Backbone.WebSQL.prototype._executeSql.secondCall.calledWith("CREATE INDEX IF NOT EXISTS `klass_user_id` ON `klass` (user_id);")
         ).to.be.true
 
+        expect(Backbone.WebSQL.prototype._executeSql.calledTwice).to.be.true
+
     context 'when index is twe dimensions array', ->
       it 'should execute expected index query', ->
         Klass = Backbone.Model.extend
@@ -119,6 +131,8 @@ describe 'Backbone.WebSQL', ->
           Backbone.WebSQL.prototype._executeSql.secondCall.calledWith("CREATE INDEX IF NOT EXISTS `klass_user_id` ON `klass` (user_id);")
         ).to.be.true
 
+        expect(Backbone.WebSQL.prototype._executeSql.calledTwice).to.be.true
+
     context 'when index is one dimension array and elements are multiple', ->
       it 'should execute expected index query', ->
         Klass = Backbone.Model.extend
@@ -127,6 +141,8 @@ describe 'Backbone.WebSQL', ->
         expect(
           Backbone.WebSQL.prototype._executeSql.secondCall.calledWith("CREATE INDEX IF NOT EXISTS `klass_user_id_parent_id` ON `klass` (user_id, parent_id);")
         ).to.be.true
+
+        expect(Backbone.WebSQL.prototype._executeSql.calledTwice).to.be.true
 
     context 'when index is two dimensions array and elements are multiple', ->
       it 'should execute expected index query', ->
@@ -140,6 +156,8 @@ describe 'Backbone.WebSQL', ->
         expect(
           Backbone.WebSQL.prototype._executeSql.thirdCall.calledWith("CREATE INDEX IF NOT EXISTS `klass_id_parent_id` ON `klass` (id, parent_id);")
         ).to.be.true
+
+        expect(Backbone.WebSQL.prototype._executeSql.calledThrice).to.be.true
 
   describe '.create', ->
     context 'when optional column doesnt exist', ->
