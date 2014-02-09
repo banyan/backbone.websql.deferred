@@ -8,7 +8,7 @@ Users = Backbone.Collection.extend
   store: User::store
 
 Post = Backbone.Model.extend
-  store: new Backbone.WebSQL(db, 'posts', [{name: 'user_id'}])
+  store: new Backbone.WebSQL(db, 'posts', ['user_id'])
 
 Posts = Backbone.Collection.extend
   model: Post
@@ -40,6 +40,53 @@ describe 'Backbone.WebSQL', ->
           store: new Backbone.WebSQL(db, 'users')
 
       expect(fn).to.throw('Backbone.websql.deferred: Environment does not support WebSQL.')
+
+  context 'when optional columns exist', ->
+    beforeEach ->
+      sinon.spy(Backbone.WebSQL.prototype, "_executeSql")
+
+    afterEach ->
+      Backbone.WebSQL.prototype._executeSql.restore()
+
+    it 'can be defined by array', ->
+      Klass = Backbone.Model.extend
+        store: new Backbone.WebSQL(db, 'klass', ['user_id'])
+
+      expect(
+        Backbone.WebSQL.prototype._executeSql.calledWith("CREATE TABLE IF NOT EXISTS `klass` (`id` unique, `value`, `user_id`);")
+      ).to.be.true
+
+    it 'can be defined by multiple array', ->
+      Klass = Backbone.Model.extend
+        store: new Backbone.WebSQL(db, 'klass', ['user_id', 'parent_id'])
+
+      expect(
+        Backbone.WebSQL.prototype._executeSql.calledWith("CREATE TABLE IF NOT EXISTS `klass` (`id` unique, `value`, `user_id`, `parent_id`);")
+      ).to.be.true
+
+    it 'can be defined by objects in array', ->
+      Klass = Backbone.Model.extend
+        store: new Backbone.WebSQL(db, 'klass', [{name: 'user_id'}])
+
+      expect(
+        Backbone.WebSQL.prototype._executeSql.calledWith("CREATE TABLE IF NOT EXISTS `klass` (`id` unique, `value`, `user_id`);")
+      ).to.be.true
+
+    it 'can be defined with type by objects in array', ->
+      Klass = Backbone.Model.extend
+        store: new Backbone.WebSQL(db, 'klass', [{name: 'user_id', type: 'number'}])
+
+      expect(
+        Backbone.WebSQL.prototype._executeSql.calledWith("CREATE TABLE IF NOT EXISTS `klass` (`id` unique, `value`, `user_id` INTEGER);")
+      ).to.be.true
+
+    it 'can be defined by multiple objects in array', ->
+      Klass = Backbone.Model.extend
+        store: new Backbone.WebSQL(db, 'klass', [{name: 'user_id'}, {name: 'parent_id'}])
+
+      expect(
+        Backbone.WebSQL.prototype._executeSql.calledWith("CREATE TABLE IF NOT EXISTS `klass` (`id` unique, `value`, `user_id`, `parent_id`);")
+      ).to.be.true
 
   describe '.create', ->
     context 'when optional column doesnt exist', ->
