@@ -133,6 +133,28 @@ describe 'Backbone.WebSQL', ->
           expect(rows[0]['user_id']).to.eq @post.get 'user_id'
           done()
 
+    context 'without deferred interface', ->
+      beforeEach (done) ->
+        @post = new Post
+          title: 'foo'
+          user_id: 'bar'
+
+        do (done) => @post.save()
+          success: (model, response, options) =>
+          done()
+
+      afterEach ->
+        @post.destroy()
+
+      it 'should create a post and can fetch by user_id (not default key)', (done) ->
+        post = new Post(id: @post.get 'id')
+        post.fetch
+          success: (model, response, options) =>
+            expect(post.get 'id').to.eq @post.get 'id'
+            expect(post.get 'title').to.eq @post.get 'title'
+            expect(post.get 'user_id').to.eq @post.get 'user_id'
+            done()
+
   describe '.findAll', ->
     beforeEach (done) =>
       @user1 = new User name: 'user1'
