@@ -344,3 +344,35 @@ describe 'Backbone.WebSQL', ->
         expect(Backbone.WebSQL.sync.called).to.be.false
         expect(Backbone.WebSQL.ajaxSync.calledOnce).to.be.true
         done()
+
+  describe 'Backbone.WebSQL.promiseType', ->
+    context 'Backbone.WebSQL.promiseType is set to use Q', ->
+      beforeEach (done) ->
+        Backbone.WebSQL.promiseType = 'q'
+
+        @user = new User
+          name: 'foobar'
+
+        @user.save().done do (done) =>
+          done()
+
+      afterEach ->
+        @user.destroy()
+
+      it 'should create a user and can fetch', (done) ->
+        fetchedUser = new User id: @user.id
+        fetchedUser.fetch().done =>
+          expect(fetchedUser.get 'id').to.eq @user.get 'id'
+          expect(fetchedUser.get 'name').to.eq @user.get 'name'
+          done()
+
+    context 'Backbone.WebSQL.promiseType is set unknown type', ->
+      beforeEach ->
+        Backbone.WebSQL.promiseType = 'foo'
+
+        @user = new User
+          name: 'foobar'
+
+      it 'should throw an error', ->
+        fn = => @user.save().done
+        expect(fn).to.throw('Unsupported Backbone.WebSQL.promiseType: foo')
