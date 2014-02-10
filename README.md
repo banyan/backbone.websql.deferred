@@ -7,7 +7,7 @@ This is a rewrite and extension of the awesome [MarrLiss/backbone-websql](https:
 `Backbone.WebSQL.Deferred` is different in a way,
 
 1. Has deferred pattern support (currently only [jQuery deferred](http://api.jquery.com/category/deferred-object/))
-1. Doesn't override `Backbone.sync` totally, can be selectable as a function of each model.
+1. Don't override `Backbone.sync` totally, can be selectable as a function of each model.
 1. No global pollution
 1. Support Index
 
