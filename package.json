@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "underscore": "*",
-    "jquery": "*",
     "backbone": "*"
   },
   "devDependencies": {
