@@ -13,17 +13,12 @@ This is a rewrite and extension of the awesome [MarrLiss/backbone-websql](https:
 
 ## Install
 
-#### via Bower
+Download [manually](https://github.com/banyan/backbone.websql.deferred/releases) or with a package-manager.
+
+#### [Bower](http://bower.io)
 
 ```
-$ bower install backbone.websql.deferred --save-dev
-```
-
-#### Just copy the `lib/backbone.websql.deferred.js` file in your project and include it in your html
-
-```html
-<script type="text/javascript" src="backbone.js"></script>
-<script type="text/javascript" src="backbone.websql.deferred.js"></script>
+$ bower install --save-dev backbone.websql.deferred
 ```
 
 ## Usage
@@ -64,9 +59,16 @@ WebSQL is supported by many browsers ([caniuse.com/sql-storage](http://caniuse.c
 It is said that [Safari, Opera, iOS, Opera Mobile, Android Browser favour WebSQL](https://hacks.mozilla.org/2012/03/there-is-no-simple-solution-for-local-storage/).
 At least Chromium team does not plan to remove WebSQL. There's no silver bullet for web storage but it's up to the environment and what makes.
 
-## Development
+## Running tests
+
+Make sure dependencies are installed:
 
 ```
 $ npm install
+```
+
+Then run:
+
+```
 $ grunt test
 ```

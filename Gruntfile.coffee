@@ -33,13 +33,13 @@ module.exports = (grunt) ->
     coffee:
       compile:
         files:
-          'lib/backbone.websql.deferred.js': 'src/backbone.websql.deferred.coffee'
+          'dist/backbone.websql.deferred.js': 'src/backbone.websql.deferred.coffee'
           'test/lib/backbone.websql.deferred-test.js': 'test/src/backbone.websql.deferred-test.coffee'
 
     uglify:
       uglify:
         files:
-          'lib/backbone.websql.deferred.min.js': ['lib/backbone.websql.deferred.js']
+          'dist/backbone.websql.deferred.min.js': ['dist/backbone.websql.deferred.js']
 
     watch:
       src:
@@ -69,4 +69,3 @@ module.exports = (grunt) ->
   grunt.registerTask "default", ["watch"]
   grunt.registerTask "build",   ["concat", "coffee", "uglify"]
   grunt.registerTask "test",    ["build", "shell:mocha-phantomjs"]
-  # grunt.registerTask "release", ['release:patch']

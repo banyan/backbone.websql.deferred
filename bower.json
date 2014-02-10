@@ -5,7 +5,7 @@
   "authors": [
     "Kohei Hasegawa <ameutau@gmail.com>"
   ],
-  "main": "lib/backbone.websql.deferred.js",
+  "main": "dist/backbone.websql.deferred.js",
   "license": "MIT",
   "ignore": [
     "**/.*",
