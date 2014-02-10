@@ -1,10 +1,12 @@
 # Backbone.WebSQL.Deferred
+
+> [WebSQL](http://www.w3.org/TR/webdatabase/) adapter for Backbone with promise support
+
 [![Build Status](https://secure.travis-ci.org/banyan/backbone.websql.deferred.png?branch=master)](http://travis-ci.org/banyan/backbone.websql.deferred)
 
-[WebSQL](http://www.w3.org/TR/webdatabase/) adapter for Backbone.<br />
 This is a rewrite and extension of the awesome [MarrLiss/backbone-websql](https://github.com/MarrLiss/backbone-websql) plugin by @MarrLiss.
 
-`Backbone.WebSQL.Deferred` is different in a way,
+Backbone.WebSQL.Deferred is different in a way,
 
 1. Support promise implementation ([jQuery deferred](http://api.jquery.com/category/deferred-object/) and [Q](https://github.com/kriskowal/q))
 1. Don't override `Backbone.sync` totally, can be selectable as a function of each model.
