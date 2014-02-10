@@ -36,6 +36,11 @@ module.exports = (grunt) ->
           'lib/backbone.websql.deferred.js': 'src/backbone.websql.deferred.coffee'
           'test/lib/backbone.websql.deferred-test.js': 'test/src/backbone.websql.deferred-test.coffee'
 
+    uglify:
+      uglify:
+        files:
+          'lib/backbone.websql.deferred.min.js': ['lib/backbone.websql.deferred.js']
+
     watch:
       src:
         files: ["src/*.coffee", "test/src/*.coffee", "Gruntfile.coffee"]
@@ -52,7 +57,8 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-contrib-watch"
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-shell'
+  grunt.loadNpmTasks 'grunt-contrib-uglify'
 
   grunt.registerTask "default", ["watch"]
-  grunt.registerTask "build",   ["concat", "coffee"]
+  grunt.registerTask "build",   ["concat", "coffee", "uglify"]
   grunt.registerTask "test",    ["build", "shell:mocha-phantomjs"]
