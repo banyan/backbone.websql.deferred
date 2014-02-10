@@ -10,6 +10,7 @@ module.exports = (grunt) ->
           'node_modules/jquery/dist/jquery.js'
           'node_modules/underscore/underscore.js'
           'node_modules/backbone/backbone.js'
+          'node_modules/q/q.js'
         ]
         dest: 'vendor/vendor.js'
       depsForTest:

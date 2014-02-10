@@ -13,7 +13,8 @@
   "dependencies": {
     "underscore": "*",
     "jquery": "*",
-    "backbone": "*"
+    "backbone": "*",
+    "q": "*"
   },
   "devDependencies": {
     "mocha": "*",
