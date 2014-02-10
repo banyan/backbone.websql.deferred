@@ -57,6 +57,7 @@
     @_createIndex() if @indices.length isnt 0
 
   Backbone.WebSQL.insertOrReplace = false
+  Backbone.WebSQL.promiseType = 'jquery'
 
   _.extend Backbone.WebSQL.prototype,
     create: (model, doneCallback, failCallback) ->
@@ -141,7 +142,11 @@
     store = model.store or model.collection.store
     isSingleResult = false
 
-    df = Backbone.$?.Deferred?()
+    df = switch promiseType = Backbone.WebSQL.promiseType
+      when 'jquery' then Backbone.$?.Deferred?()
+      when 'q'      then Q?.defer?()
+      else
+        throw new Error "Unsupported Backbone.WebSQL.promiseType: #{promiseType}"
 
     doneCallback = (tx, res) ->
       length = res.rows.length
@@ -181,7 +186,7 @@
       else
         throw new Error "Unsupported method: #{method}"
 
-    df?.promise()
+    if promiseType is 'jquery' then df?.promise() else df?.promise
 
   Backbone.WebSQL.ajaxSync = Backbone.sync
   Backbone.WebSQL.getSyncMethod = (model) ->

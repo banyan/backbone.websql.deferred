@@ -60,6 +60,7 @@
       }
     };
     Backbone.WebSQL.insertOrReplace = false;
+    Backbone.WebSQL.promiseType = 'jquery';
     _.extend(Backbone.WebSQL.prototype, {
       create: function(model, doneCallback, failCallback) {
         var col, colNames, orReplace, params, placeholders, _i, _len, _ref;
@@ -163,10 +164,20 @@
       }
     });
     Backbone.WebSQL.sync = function(method, model, options) {
-      var df, doneCallback, failCallback, isSingleResult, store, _ref;
+      var df, doneCallback, failCallback, isSingleResult, promiseType, store;
       store = model.store || model.collection.store;
       isSingleResult = false;
-      df = (_ref = Backbone.$) != null ? typeof _ref.Deferred === "function" ? _ref.Deferred() : void 0 : void 0;
+      df = (function() {
+        var _ref;
+        switch (promiseType = Backbone.WebSQL.promiseType) {
+          case 'jquery':
+            return (_ref = Backbone.$) != null ? typeof _ref.Deferred === "function" ? _ref.Deferred() : void 0 : void 0;
+          case 'q':
+            return typeof Q !== "undefined" && Q !== null ? typeof Q.defer === "function" ? Q.defer() : void 0 : void 0;
+          default:
+            throw new Error("Unsupported Backbone.WebSQL.promiseType: " + promiseType);
+        }
+      })();
       doneCallback = function(tx, res) {
         var length, result;
         length = res.rows.length;
@@ -218,7 +229,11 @@
         default:
           throw new Error("Unsupported method: " + method);
       }
-      return df != null ? df.promise() : void 0;
+      if (promiseType === 'jquery') {
+        return df != null ? df.promise() : void 0;
+      } else {
+        return df != null ? df.promise : void 0;
+      }
     };
     Backbone.WebSQL.ajaxSync = Backbone.sync;
     Backbone.WebSQL.getSyncMethod = function(model) {
