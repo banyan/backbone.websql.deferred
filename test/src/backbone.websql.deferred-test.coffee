@@ -346,7 +346,7 @@ describe 'Backbone.WebSQL', ->
         done()
 
   describe 'Backbone.WebSQL.promiseType', ->
-    context 'Backbone.WebSQL.promiseType is set to use Q', ->
+    context 'when Backbone.WebSQL.promiseType is set to use Q', ->
       beforeEach (done) ->
         Backbone.WebSQL.promiseType = 'q'
 
@@ -366,7 +366,7 @@ describe 'Backbone.WebSQL', ->
           expect(fetchedUser.get 'name').to.eq @user.get 'name'
           done()
 
-    context 'Backbone.WebSQL.promiseType is set unknown type', ->
+    context 'when Backbone.WebSQL.promiseType is set unknown type', ->
       beforeEach ->
         Backbone.WebSQL.promiseType = 'foo'
 
