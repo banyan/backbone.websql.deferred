@@ -38,8 +38,8 @@ user = new User
 
 user.save().done =>
   loadUser = User.find user.get 'id'
-  loaduser.fetch().done ->
-    console.log loaduser.get 'name' # => 'foo'
+  loadUser.fetch().done ->
+    console.log loadUser.get 'name' # => 'foo'
 ```
 
 ## API
