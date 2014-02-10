@@ -4,22 +4,22 @@
 [WebSQL](http://www.w3.org/TR/webdatabase/) adapter for Backbone.<br />
 This is a rewrite and extension of the awesome [MarrLiss/backbone-websql](https://github.com/MarrLiss/backbone-websql) plugin by @MarrLiss.
 
-backbone.websql.deferred is different in a way,
+`Backbone.WebSQL.Deferred` is different in a way,
 
 1. Has deferred pattern support (currently only [jQuery deferred](http://api.jquery.com/category/deferred-object/))
-1. Doesn't override `Backbone.sync` completely, can be selectable as a function of each model.
+1. Doesn't override `Backbone.sync` totally, can be selectable as a function of each model.
 1. No global pollution
-1. Support Index.
+1. Support Index
 
 ## Install
 
-* via Bower
+#### via Bower
 
 ```
 $ bower install backbone.websql.deferred --save-dev
 ```
 
-* Just copy the `lib/backbone.websql.deferred.js` file in your project and include it in your html:
+#### Just copy the `lib/backbone.websql.deferred.js` file in your project and include it in your html
 
 ```html
 <script type="text/javascript" src="backbone.js"></script>
@@ -62,7 +62,7 @@ Even W3C supports IndexedDB, it's not matured yet as you see.
 WebSQL is better than localStorage in terms of performance and capacity if your content is big.
 WebSQL is supported by many browsers ([caniuse.com/sql-storage](http://caniuse.com/sql-storage)).
 It is said that [Safari, Opera, iOS, Opera Mobile, Android Browser favour WebSQL](https://hacks.mozilla.org/2012/03/there-is-no-simple-solution-for-local-storage/).
-At least Chromium team does not plan to remove WebSQL. There's no one answer but it's up to the environment and what makes.
+At least Chromium team does not plan to remove WebSQL. There's no silver bullet for web storage but it's up to the environment and what makes.
 
 ## Development
 
