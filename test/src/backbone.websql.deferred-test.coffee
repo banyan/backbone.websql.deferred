@@ -346,6 +346,10 @@ describe 'Backbone.WebSQL', ->
         done()
 
   describe 'Backbone.WebSQL.promiseType', ->
+    afterEach ->
+      @user.destroy()
+      Backbone.WebSQL.promiseType = 'jquery'
+
     context 'when Backbone.WebSQL.promiseType is set to use Q', ->
       beforeEach (done) ->
         Backbone.WebSQL.promiseType = 'q'
@@ -355,9 +359,6 @@ describe 'Backbone.WebSQL', ->
 
         @user.save().done do (done) =>
           done()
-
-      afterEach ->
-        @user.destroy()
 
       it 'should create a user and can fetch', (done) ->
         fetchedUser = new User id: @user.id
