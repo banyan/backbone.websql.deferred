@@ -23,6 +23,12 @@ Download [manually](https://github.com/banyan/backbone.websql.deferred/releases)
 $ bower install --save-dev backbone.websql.deferred
 ```
 
+#### [Component](https://github.com/component/component)
+
+```
+$ component install banyan/backbone.websql.deferred
+```
+
 ## Usage
 
 ```coffeescript

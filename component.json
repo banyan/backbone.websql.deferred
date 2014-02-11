@@ -1,0 +1,14 @@
+{
+  "name": "backbone.websql.deferred",
+  "repo": "banyan/backbone.websql.deferred",
+  "description": "WebSQL adapter for Backbone with promise support",
+  "version": "0.1.3",
+  "keywords": [],
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "scripts": [
+    "dist/backbone.websql.deferred.js",
+    "dist/backbone.websql.deferred.min.js"
+  ]
+}
