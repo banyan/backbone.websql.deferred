@@ -220,6 +220,27 @@ describe 'Backbone.WebSQL', ->
             expect(post.get 'user_id').to.eq @post.get 'user_id'
             done()
 
+  describe '.find', ->
+    beforeEach (done) =>
+      @post1 = new Post title: 'hello1', user_id: 'foo'
+      @post2 = new Post title: 'hello2', user_id: 'foo'
+      @post3 = new Post title: 'hello3', user_id: 'foo'
+
+      $.when(
+        _.invoke [@post1, @post2, @post3], 'save'
+      ).done do (done) => done()
+
+    afterEach (done) =>
+      $.when(
+        _.invoke [@post1, @post2, @post3], 'destroy'
+      ).done do (done) => done()
+
+    it 'should fetch record', (done) =>
+      post = new Post id: @post1.get 'id'
+      post.fetch().done =>
+        expect(post.get 'title').to.eq 'hello1'
+        done()
+
   describe '.findAll', ->
     beforeEach (done) =>
       @user1 = new User name: 'user1'
