@@ -82,7 +82,34 @@
         return this._executeSql("INSERT " + orReplace + " INTO `" + this.tableName + "`(" + (colNames.join(",")) + ") VALUES (" + (placeholders.join(",")) + ");", params);
       },
       find: function(model, doneCallback, failCallback, options) {
-        return this._executeSql("SELECT `id`, `value` FROM `" + this.tableName + "` WHERE (`id` = ?);", [model.id.toString()], doneCallback, failCallback, options);
+        var params, sql;
+        sql = "SELECT `id`, `value` FROM `" + this.tableName + "`";
+        if (options.where) {
+          if (typeof options.where === "string") {
+            sql += " WHERE " + options.where;
+          } else if (typeof options.where === "object") {
+            sql += " WHERE " + Object.keys(options.where).map(function(col) {
+              var placeholders;
+              if (_.isArray(options.where[col])) {
+                params.push.apply(params, options.where[col]);
+                placeholders = [];
+                _(options.where[col].length).times(function() {
+                  return placeholders.push('?');
+                });
+                return "`" + col + "` IN (" + (placeholders.join()) + ")";
+              } else {
+                params.push(options.where[col]);
+                return "`" + col + "` = ?";
+              }
+            }).join(" AND ");
+          } else {
+            throw new Error("Unsupported where type: " + (typeof options.where));
+          }
+        } else {
+          sql += " WHERE  (`id` = ?);";
+          params = [model.id.toString()];
+        }
+        return this._executeSql(sql, params, doneCallback, failCallback, options);
       },
       findAll: function(model, doneCallback, failCallback, options) {
         var params, sql;
@@ -210,7 +237,7 @@
       };
       switch (method) {
         case "read":
-          if (model.id === void 0) {
+          if (model instanceof Backbone.Collection) {
             store.findAll(model, doneCallback, failCallback, options);
           } else {
             isSingleResult = true;
