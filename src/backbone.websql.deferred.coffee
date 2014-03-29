@@ -172,7 +172,7 @@
 
     switch method
       when "read"
-        if model.id is undefined
+        if model instanceof Backbone.Collection
           store.findAll(model, doneCallback, failCallback, options)
         else
           isSingleResult = true
