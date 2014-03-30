@@ -222,23 +222,23 @@ describe 'Backbone.WebSQL', ->
 
   describe '.find', ->
     beforeEach (done) =>
-      @post1 = new Post title: 'hello1', user_id: 'foo'
-      @post2 = new Post title: 'hello2', user_id: 'foo'
-      @post3 = new Post title: 'hello3', user_id: 'foo'
+      @post = new Post title: 'hello', user_id: 'foo'
+      @post.save().done do (done) =>
+        done()
 
-      $.when(
-        _.invoke [@post1, @post2, @post3], 'save'
-      ).done do (done) => done()
-
-    afterEach (done) =>
-      $.when(
-        _.invoke [@post1, @post2, @post3], 'destroy'
-      ).done do (done) => done()
+    afterEach =>
+      @post.destroy()
 
     it 'should fetch record', (done) =>
-      post = new Post id: @post1.get 'id'
+      post = new Post id: @post.get 'id'
       post.fetch().done =>
-        expect(post.get 'title').to.eq 'hello1'
+        expect(post.get 'title').to.eq 'hello'
+        done()
+
+    it 'should fetch record by foreign key', (done) =>
+      post = new Post
+      post.fetch(where: { user_id: 'foo' }).done =>
+        expect(post.get 'title').to.eq 'hello'
         done()
 
   describe '.findAll', ->

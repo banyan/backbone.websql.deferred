@@ -83,6 +83,7 @@
       },
       find: function(model, doneCallback, failCallback, options) {
         var params, sql;
+        params = [];
         sql = "SELECT `id`, `value` FROM `" + this.tableName + "`";
         if (options.where) {
           if (typeof options.where === "string") {
