@@ -84,6 +84,7 @@
     find: (model, doneCallback, failCallback, options) ->
       params = []
       sql = "SELECT `id`, `value` FROM `#{@tableName}`"
+      # TODO should bundle with findAll's logic
       if options.where
         if typeof options.where is "string"
           sql += " WHERE " + options.where
