@@ -82,6 +82,7 @@
       @_executeSql "INSERT #{orReplace} INTO `#{@tableName}`(#{colNames.join(",")}) VALUES (#{placeholders.join(",")});", params
 
     find: (model, doneCallback, failCallback, options) ->
+      params = []
       sql = "SELECT `id`, `value` FROM `#{@tableName}`"
       if options.where
         if typeof options.where is "string"
