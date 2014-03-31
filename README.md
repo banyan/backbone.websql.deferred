@@ -52,6 +52,12 @@ user.save().done =>
 
 ## API
 
+* TODO
+
+## Changes
+
+* 0.2.0 (2014/03/31) - Model#fetch returns first model even if exists multi models
+
 ## Requirements
 
 * backbone.js
