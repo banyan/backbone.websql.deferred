@@ -82,8 +82,30 @@
       @_executeSql "INSERT #{orReplace} INTO `#{@tableName}`(#{colNames.join(",")}) VALUES (#{placeholders.join(",")});", params
 
     find: (model, doneCallback, failCallback, options) ->
-      @_executeSql "SELECT `id`, `value` FROM `#{@tableName}` WHERE (`id` = ?);",
-        [model.id.toString()], doneCallback, failCallback, options
+      params = []
+      sql = "SELECT `id`, `value` FROM `#{@tableName}`"
+      # TODO should bundle with findAll's logic
+      if options.where
+        if typeof options.where is "string"
+          sql += " WHERE " + options.where
+        else if typeof options.where is "object"
+          sql += " WHERE " + Object.keys(options.where).map((col) ->
+            if _.isArray options.where[col]
+              params.push options.where[col]...
+              placeholders = []
+              _(options.where[col].length).times -> placeholders.push '?'
+              "`#{col}` IN (#{placeholders.join()})"
+            else
+              params.push options.where[col]
+              "`#{col}` = ?"
+          ).join(" AND ")
+        else
+          throw new Error "Unsupported where type: #{typeof options.where}"
+      else
+        sql += " WHERE  (`id` = ?);"
+        params = [model.id.toString()]
+
+      @_executeSql sql, params, doneCallback, failCallback, options
 
     findAll: (model, doneCallback, failCallback, options) ->
       params = []
@@ -172,7 +194,7 @@
 
     switch method
       when "read"
-        if model.id is undefined
+        if model instanceof Backbone.Collection
           store.findAll(model, doneCallback, failCallback, options)
         else
           isSingleResult = true
